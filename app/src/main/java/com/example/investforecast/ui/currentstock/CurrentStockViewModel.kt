@@ -49,7 +49,7 @@ class CurrentStockViewModel(private val investRepository: InvestRepository, val 
     fun addStock(count: Int){
         viewModelScope.launch(Dispatchers.IO){
             try {
-                investRepository.addStock("Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ0Zjk0ZjRhNDQxNTI5NTRjYjA2NTJkIiwiZXhwIjoxNjg2MjE3Mzk5fQ.stHZuHfqBayZ88-uS6eNZNyfSrDzOeJnsTxqz_GUTSc", ticker, count)
+                investRepository.addStock(ticker, count)
             } catch (e: Throwable) {
                 e.message?.let { Log.d("current", it) }
             }

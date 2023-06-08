@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.investforecast.TokenManager
 import com.example.investforecast.domain.InvestRepository
 import com.example.investforecast.domain.model.StockInfo
-import com.example.investforecast.ui.login.LoginViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber

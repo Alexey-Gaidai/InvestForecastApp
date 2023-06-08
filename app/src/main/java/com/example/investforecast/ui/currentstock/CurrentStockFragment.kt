@@ -60,11 +60,6 @@ class CurrentStockFragment : Fragment() {
             arrayOf(stockPrice.close)
         }.toMutableList()
 
-        val categories: MutableList<String> =
-            stockPricesModel.stockPrices.value!!.map { stockPrice ->
-                stockPrice.date.split('T').first()
-            }.toMutableList()
-
         val dataPred = stockPricesModel.stockForecast.value!!.map { stockPrice ->
             arrayOf(stockPrice.close)
         }

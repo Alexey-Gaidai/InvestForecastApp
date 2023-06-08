@@ -10,8 +10,8 @@ class TokenManager(private val sharedPreferences: SharedPreferences) {
         editor.apply()
     }
 
-    private fun getToken(): String? {
-        return sharedPreferences.getString("token", null)
+    fun getToken(): String? {
+        return "Bearer ${sharedPreferences.getString("token", null)}"
     }
 
     fun clearToken() {

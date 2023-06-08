@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.investforecast.ui.login.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" />
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.example.investforecast.ui.home.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/navigation_stocks"
+        android:name="com.example.investforecast.ui.stocks.StocksFragment"
+        android:label="@string/title_stocks"
+        tools:layout="@layout/fragment_stocks" >
+        <action
+            android:id="@+id/action_navigation_stocks_to_currentStockFragment"
+            app:destination="@id/currentStockFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_mystocks"
+        android:name="com.example.investforecast.ui.mystocks.MyStocksFragment"
+        android:label="@string/title_mystocks"
+        tools:layout="@layout/fragment_mystocks" />
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.example.investforecast.ui.profile.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/currentStockFragment"
+        android:name="com.example.investforecast.ui.currentstock.CurrentStockFragment"
+        android:label="fragment_current_stock"
+        tools:layout="@layout/fragment_current_stock">
+        <argument
+            android:name="stockName"
+            app:argType="string" />
+    </fragment>
+</navigation>

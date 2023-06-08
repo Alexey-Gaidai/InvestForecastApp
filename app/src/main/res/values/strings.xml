@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">InvestForecast</string>
+    <string name="title_home">Home</string>
+    <string name="title_stocks">Stocks</string>
+    <string name="title_mystocks">My Stocks</string>
+    <string name="title_profile">My Profile</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

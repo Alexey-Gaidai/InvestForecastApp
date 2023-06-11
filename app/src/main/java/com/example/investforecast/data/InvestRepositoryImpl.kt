@@ -2,11 +2,13 @@ package com.example.investforecast.data
 
 import android.util.Log
 import com.example.investforecast.App
-import com.example.investforecast.TokenManager
 import com.example.investforecast.data.nw.InvestAPIService
+import com.example.investforecast.data.nw.NewsAPIService
 import com.example.investforecast.data.nw.model.AddStockResponse
+import com.example.investforecast.data.nw.model.mapToDomain
 import com.example.investforecast.data.nw.model.toDomain
 import com.example.investforecast.domain.InvestRepository
+import com.example.investforecast.domain.model.News
 import com.example.investforecast.domain.model.Portfolio
 import com.example.investforecast.domain.model.SignUp
 import com.example.investforecast.domain.model.StockForecast
@@ -14,7 +16,7 @@ import com.example.investforecast.domain.model.StockInfo
 import com.example.investforecast.domain.model.StockPrices
 import okhttp3.Credentials
 
-class InvestRepositoryImpl(private val api: InvestAPIService): InvestRepository {
+class InvestRepositoryImpl(private val api: InvestAPIService, private val newsApi: NewsAPIService): InvestRepository {
     override suspend fun login(username: String, password: String): Boolean {
         val credentials = Credentials.basic(username, password)
 
@@ -129,6 +131,29 @@ class InvestRepositoryImpl(private val api: InvestAPIService): InvestRepository 
             }
         } catch (e: Exception){
             Portfolio(Portfolio.InvestmentPortfolio( 0.0, emptyList(),0.0))
+        }
+    }
+
+    override suspend fun getNews(
+        countries: String,
+        filterEntities: String,
+        language: String,
+        api_token: String,
+        industry: String,
+        page: Int
+    ): List<News> {
+        return try {
+
+            val response = newsApi.getNews(countries, filterEntities, language, api_token, industry, page)
+
+            if(response.isSuccessful){
+                val result = response.body()!!
+                result.mapToDomain()
+            } else  {
+                emptyList()
+            }
+        } catch (e: Exception){
+            emptyList()
         }
     }
 }

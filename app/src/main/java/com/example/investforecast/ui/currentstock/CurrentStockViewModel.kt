@@ -8,10 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.investforecast.domain.InvestRepository
 import com.example.investforecast.domain.model.StockForecast
-import com.example.investforecast.domain.model.StockInfo
 import com.example.investforecast.domain.model.StockPrices
-import com.example.investforecast.ui.stocks.StocksViewModel
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

@@ -1,13 +1,12 @@
 package com.example.investforecast.ui.currentstock
 
 import android.app.AlertDialog
-import android.app.ProgressDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.investforecast.App
@@ -17,10 +16,6 @@ import com.github.aachartmodel.aainfographics.aachartcreator.AAChartModel
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartType
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartZoomType
 import com.github.aachartmodel.aainfographics.aachartcreator.AASeriesElement
-import com.github.aachartmodel.aainfographics.aachartcreator.aa_toAAOptions
-import com.github.aachartmodel.aainfographics.aaoptionsmodel.AADataLabels
-import com.github.aachartmodel.aainfographics.aaoptionsmodel.AAXAxis
-import com.google.android.material.snackbar.Snackbar
 
 class CurrentStockFragment : Fragment() {
     private val stockPricesModel: CurrentStockViewModel by viewModels {
@@ -33,6 +28,12 @@ class CurrentStockFragment : Fragment() {
     private val binding get() = _binding!!
     private val aaChartModel: AAChartModel = AAChartModel()
     lateinit var loadingDialog: AlertDialog
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        (requireActivity() as AppCompatActivity).supportActionBar?.title =
+            CurrentStockFragmentArgs.fromBundle(requireArguments()).stockName
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,7 +56,6 @@ class CurrentStockFragment : Fragment() {
         val customLayout = LayoutInflater.from(requireContext())
             .inflate(R.layout.custom_loading, null)
 
-        val progressBar = ProgressBar(requireContext())
         loadingDialog = AlertDialog.Builder(requireContext())
             .setView(customLayout)
             .setCancelable(false)
@@ -63,6 +63,21 @@ class CurrentStockFragment : Fragment() {
 
         // Показать AlertDialog с ProgressBar при начале загрузки
         loadingDialog.show()
+    }
+
+    private fun initForecastData() {
+        val forecast = stockPricesModel.stockForecast.value!!.takeLast(30).map { it.close }
+        binding.tvForecastPriceValue.text = forecast.average().format(2).toString()
+        binding.tvForecastRangeValue.text =
+            "${forecast.min().format(2)}-${forecast.max().format(2)}"
+    }
+
+    private fun initMarketData() {
+        val lastData = stockPricesModel.stockPrices.value!!.last()
+        binding.tvOpenValue.text = lastData.open.format(2)
+        binding.tvCloseValue.text = lastData.close.format(2)
+        binding.tvVolumeValue.text = lastData.volume.toString()
+        binding.tvRangeValue.text = "${lastData.low.format(2)}-${lastData.high.format(2)}"
     }
 
     private fun addToPortfolioClicked() {
@@ -77,6 +92,9 @@ class CurrentStockFragment : Fragment() {
         binding.npCount.value = 1
         binding.npCount.maxValue = 10000
         binding.npCount.minValue = 1
+        binding.npCount.isReadOnly = true
+        binding.npCount.buttonAnimationEnabled = false
+
     }
 
     private fun observeViewModel() {
@@ -85,6 +103,8 @@ class CurrentStockFragment : Fragment() {
                 // Данные доступны, можно инициализировать график
                 initChart()
                 loadingDialog.dismiss()
+                initForecastData()
+                initMarketData()
             }
         }
     }
@@ -131,3 +151,5 @@ class CurrentStockFragment : Fragment() {
     }
 
 }
+
+fun Double.format(digits: Int) = "%.${digits}f".format(this)

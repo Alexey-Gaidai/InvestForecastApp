@@ -5,11 +5,12 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.example.investforecast.data.InvestRepositoryImpl
 import com.example.investforecast.data.nw.InvestAPIService
+import com.example.investforecast.data.nw.NewsAPIService
 import com.example.investforecast.domain.InvestRepository
 
 class App : Application() {
     private lateinit var apiService: InvestAPIService
-
+    private lateinit var newsApiService: NewsAPIService
 
     companion object {
         lateinit var repository: InvestRepository
@@ -23,6 +24,7 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         initApiService()
+        initNewsApiService()
         initRepository()
         initSharedPreferences()
         initTokenManager()
@@ -39,8 +41,11 @@ class App : Application() {
     private fun initApiService() {
         apiService = InvestAPIService.createApiService()
     }
+    private fun initNewsApiService() {
+        newsApiService = NewsAPIService.createApiService()
+    }
 
     private fun initRepository() {
-        repository = InvestRepositoryImpl(apiService)
+        repository = InvestRepositoryImpl(apiService, newsApiService)
     }
 }

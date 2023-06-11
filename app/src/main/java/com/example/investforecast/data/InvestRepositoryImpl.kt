@@ -1,5 +1,6 @@
 package com.example.investforecast.data
 
+import android.util.Log
 import com.example.investforecast.App
 import com.example.investforecast.TokenManager
 import com.example.investforecast.data.nw.InvestAPIService
@@ -7,6 +8,7 @@ import com.example.investforecast.data.nw.model.AddStockResponse
 import com.example.investforecast.data.nw.model.toDomain
 import com.example.investforecast.domain.InvestRepository
 import com.example.investforecast.domain.model.Portfolio
+import com.example.investforecast.domain.model.SignUp
 import com.example.investforecast.domain.model.StockForecast
 import com.example.investforecast.domain.model.StockInfo
 import com.example.investforecast.domain.model.StockPrices
@@ -30,6 +32,27 @@ class InvestRepositoryImpl(private val api: InvestAPIService): InvestRepository 
             }
         } catch (e: Exception) {
             false
+        }
+    }
+
+    override suspend fun signUp(name: String, email: String, password: String): String {
+        try{
+
+            val request = SignUp(name, email, password)
+            val response = api.signUp(request)
+
+            if (response.isSuccessful) {
+                val registerResponse = response.body()
+                if (registerResponse != null) {
+                    return registerResponse.message
+                }
+            }
+            Log.e("signup", "импл ${response.body()}")
+            return "Failed to register user"
+        }
+        catch (e: Exception){
+            Log.e("signup", "импл словила ${e.message.toString()}")
+            return "something went wrong..."
         }
     }
 

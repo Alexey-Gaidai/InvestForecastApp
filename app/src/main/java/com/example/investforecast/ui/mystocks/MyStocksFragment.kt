@@ -40,6 +40,7 @@ class MyStocksFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initSwipeRefreshLayout()
         observeViewModel()
         initRecyclerView()
     }
@@ -53,6 +54,12 @@ class MyStocksFragment : Fragment() {
         myStocksModel.portfolio.observe(viewLifecycleOwner) { portfolio ->
             adapter.submitList(portfolio.investmentPortfolio.stocks)
             initTotal(portfolio)
+        }
+    }
+
+    private fun initSwipeRefreshLayout() {
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            myStocksModel.loadPortfolio()
         }
     }
 

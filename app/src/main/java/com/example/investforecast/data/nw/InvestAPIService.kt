@@ -2,8 +2,10 @@ package com.example.investforecast.data.nw
 
 import com.example.investforecast.data.nw.model.AddStockResponse
 import com.example.investforecast.data.nw.model.AuthInfo
+import com.example.investforecast.data.nw.model.SignUpResponse
 import com.example.investforecast.data.nw.model.StockPrices
 import com.example.investforecast.domain.model.Portfolio
+import com.example.investforecast.domain.model.SignUp
 import com.example.investforecast.domain.model.StockForecast
 import com.example.investforecast.domain.model.StockInfo
 import okhttp3.OkHttpClient
@@ -70,4 +72,9 @@ interface InvestAPIService {
     suspend fun getPortfolio(
         @Header("Authorization") token: String
     ): Response<Portfolio>
+
+    @POST("/register")
+    suspend fun signUp(
+        @Body userData: SignUp
+    ): Response<SignUpResponse>
 }

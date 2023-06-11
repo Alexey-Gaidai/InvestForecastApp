@@ -20,7 +20,7 @@ class MyStocksViewModel(private val investRepository: InvestRepository) : ViewMo
         loadPortfolio()
     }
 
-    private fun loadPortfolio() {
+    fun loadPortfolio() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val data = investRepository.getPortfolio()

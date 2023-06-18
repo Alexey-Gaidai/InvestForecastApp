@@ -37,10 +37,10 @@ class InvestRepositoryImpl(private val api: InvestAPIService, private val newsAp
         }
     }
 
-    override suspend fun signUp(name: String, email: String, password: String): String {
+    override suspend fun signUp(name: String, lastname: String, email: String, password: String): String {
         try{
 
-            val request = SignUp(name, email, password)
+            val request = SignUp(name, lastname, email, password)
             val response = api.signUp(request)
 
             if (response.isSuccessful) {
@@ -78,11 +78,14 @@ class InvestRepositoryImpl(private val api: InvestAPIService, private val newsAp
 
             if(response.isSuccessful){
                 val result = response.body()!!
-                result.toDomain()
+                Log.d("result", response.body().toString())
+                result
             } else  {
+                Log.d("result is not success", "123")
                 emptyList()
             }
         } catch (e: Exception){
+            Log.d("exceptionnnnn", e.message.toString())
             emptyList()
         }
     }

@@ -100,7 +100,6 @@ class CurrentStockFragment : Fragment() {
     private fun observeViewModel() {
         stockPricesModel.stockForecast.observe(viewLifecycleOwner) { stockForecast ->
             if (stockForecast != null && stockForecast.isNotEmpty()) {
-                // Данные доступны, можно инициализировать график
                 initChart()
                 loadingDialog.dismiss()
                 initForecastData()

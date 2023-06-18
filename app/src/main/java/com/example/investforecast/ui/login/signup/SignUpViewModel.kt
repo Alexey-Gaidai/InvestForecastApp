@@ -14,10 +14,10 @@ class SignUpViewModel(private val investRepository: InvestRepository): ViewModel
     private val _response: MutableLiveData<String> = MutableLiveData()
     val response: LiveData<String> get() = _response
 
-    fun signUp(name: String, password: String, email: String) {
+    fun signUp(name: String, lastname: String, password: String, email: String) {
         viewModelScope.launch(Dispatchers.IO) {
             try{
-                val response = investRepository.signUp(name,email, password)
+                val response = investRepository.signUp(name,lastname, email, password)
                 _response.postValue(response)
                 Log.e("signup", "модель ответила $response")
             }

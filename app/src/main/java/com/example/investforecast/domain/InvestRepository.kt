@@ -10,7 +10,7 @@ import retrofit2.http.Query
 
 interface InvestRepository {
     suspend fun login(username: String, password: String): Boolean
-    suspend fun signUp(name: String, email: String, password: String): String
+    suspend fun signUp(name: String,lastname: String, email: String, password: String): String
     suspend fun getStocks(): List<StockInfo>
     suspend fun getStockPrices(ticker: String): List<StockPrices>
     suspend fun getStockForecast(ticker: String): List<StockForecast>

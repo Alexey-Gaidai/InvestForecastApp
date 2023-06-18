@@ -16,5 +16,5 @@ data class StockPrices(
     @SerializedName("close")
     val close: Double,
     @SerializedName("volume")
-    val volume: Long,
+    val volume: Int,
 )

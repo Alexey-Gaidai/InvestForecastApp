@@ -9,12 +9,19 @@ data class Portfolio(
 ) {
     data class InvestmentPortfolio(
         @SerializedName("returns")
-        val returns: Double,
+        val returns: Returns,
         @SerializedName("stocks")
         val stocks: List<Stock>,
         @SerializedName("total")
         val total: Double
     ) {
+        data class Returns(
+            @SerializedName("monetary_return")
+            val monetaryReturn: Double,
+            @SerializedName("percentage_return")
+            val percentageReturn: Double
+        )
+
         data class Stock(
             @SerializedName("count")
             val count: Int,

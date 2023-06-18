@@ -48,6 +48,7 @@ class SignUpFragment : Fragment() {
             if (binding.etPassword.text.toString() == binding.etRepeatPassword.text.toString() && binding.cbAgree.isChecked && binding.etName.text.isNotEmpty() && binding.etEmail.text.isNotEmpty()) {
                 model.signUp(
                     binding.etName.text.toString(),
+                    binding.etLastname.text.toString(),
                     binding.etPassword.text.toString(),
                     binding.etEmail.text.toString(),
                 )

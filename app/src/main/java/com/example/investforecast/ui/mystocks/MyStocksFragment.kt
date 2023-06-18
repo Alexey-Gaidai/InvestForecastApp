@@ -13,17 +13,21 @@ import com.example.investforecast.App
 import com.example.investforecast.R
 import com.example.investforecast.databinding.FragmentMystocksBinding
 import com.example.investforecast.domain.model.Portfolio
+import com.example.investforecast.ui.currentstock.format
 import com.example.investforecast.ui.stocks.StocksAdapter
 import com.example.investforecast.ui.stocks.StocksFragmentDirections
 import com.example.investforecast.ui.stocks.StocksViewModel
 import com.example.investforecast.ui.stocks.StocksViewModelFactory
+import com.github.aachartmodel.aainfographics.aachartcreator.AAChartModel
+import com.github.aachartmodel.aainfographics.aachartcreator.AAChartType
+import com.github.aachartmodel.aainfographics.aachartcreator.AASeriesElement
 import kotlin.math.round
 
 class MyStocksFragment : Fragment() {
 
     private var _binding: FragmentMystocksBinding? = null
     private val binding get() = _binding!!
-
+    private val aaChartModel: AAChartModel = AAChartModel()
     private val adapter = MyStocksAdapter{
         navigateToCurrentStock(it)
     }
@@ -54,6 +58,7 @@ class MyStocksFragment : Fragment() {
         myStocksModel.portfolio.observe(viewLifecycleOwner) { portfolio ->
             adapter.submitList(portfolio.investmentPortfolio.stocks)
             initTotal(portfolio)
+            initChart()
         }
     }
 
@@ -64,13 +69,49 @@ class MyStocksFragment : Fragment() {
     }
 
     private fun initTotal(portfolio: Portfolio) {
-        binding.tvCosts.text = portfolio.investmentPortfolio.total.toString() + "₽"
-        val percents = round(portfolio.investmentPortfolio.returns / portfolio.investmentPortfolio.total * 100.00)
-        binding.tvReturns.text = portfolio.investmentPortfolio.returns.toString()  + "(${percents})"
-        if (portfolio.investmentPortfolio.returns > 0)
+        binding.tvCosts.text = portfolio.investmentPortfolio.total.format(2) + "₽"
+        binding.tvReturns.text = portfolio.investmentPortfolio.returns.monetaryReturn.toString()
+        binding.tvPercentsValue.text = portfolio.investmentPortfolio.returns.percentageReturn.toString()
+        if (portfolio.investmentPortfolio.returns.percentageReturn > 0)
+        {
             binding.tvReturns.setTextColor(resources.getColor(R.color.green_returns))
+            binding.tvPercentsValue.setTextColor(resources.getColor(R.color.green_returns))
+        }
         else
+        {
             binding.tvReturns.setTextColor(resources.getColor(R.color.red_returns))
+            binding.tvPercentsValue.setTextColor(resources.getColor(R.color.red_returns))
+        }
+    }
+
+    private fun initChart(){
+        aaChartModel
+            .chartType(AAChartType.Pie)
+            .title("Портфель акций")
+            .subtitle("Соотношение акций в портфеле")
+            .backgroundColor("#ffffff")
+            .dataLabelsEnabled(true)
+            .legendEnabled(true)
+            .series(
+                arrayOf(
+                    AASeriesElement()
+                        .name("Акции")
+                        .innerSize("50%") // Внутренний радиус для создания doughnut-стиля
+                        .data(getStocksData()) // Получение данных акций для графика
+                )
+            )
+
+        binding.aaChartView.aa_drawChartWithChartModel(aaChartModel)
+    }
+
+    private fun getStocksData(): Array<Any> {
+        val stocksData = mutableListOf<Any>()
+        val portfolio = myStocksModel.portfolio.value?.investmentPortfolio?.stocks
+        portfolio?.forEach { stock ->
+            val stockData = arrayOf(stock.name, stock.total)
+            stocksData.add(stockData)
+        }
+        return stocksData.toTypedArray()
     }
 
     private fun initRecyclerView() {

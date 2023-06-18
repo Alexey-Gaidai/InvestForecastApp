@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.investforecast.domain.InvestRepository
 import com.example.investforecast.domain.model.StockForecast
 import com.example.investforecast.domain.model.StockPrices
+import java.lang.Thread.sleep
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -20,7 +21,6 @@ class CurrentStockViewModel(private val investRepository: InvestRepository, val 
 
     init {
         loadPrices()
-        loadForecast()
     }
 
     private fun loadPrices() {
@@ -28,6 +28,8 @@ class CurrentStockViewModel(private val investRepository: InvestRepository, val 
             try {
                 val data = investRepository.getStockPrices(ticker)
                 _stockPrices.postValue(data)
+                sleep(1000)
+                loadForecast()
             } catch (e: Throwable) {
 
             }

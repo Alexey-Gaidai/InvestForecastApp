@@ -11,6 +11,18 @@
         android:layout_height="match_parent">
 
         <TextView
+            android:id="@+id/tvYourBalance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Ваш баланс"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@id/tvCosts"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
             android:id="@+id/tvCosts"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -21,20 +33,64 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tvYourBalance"
             tools:text="32000 руб." />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <TextView
+            android:id="@+id/tvProfit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:text="Мой доход"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/tvReturns"
+            app:layout_constraintEnd_toStartOf="@id/tvReturns"
+            app:layout_constraintTop_toTopOf="@id/tvReturns" />
+
 
         <TextView
             android:id="@+id/tvReturns"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginBottom="24dp"
-            android:textAlignment="center"
             android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="@id/tvCosts"
-            app:layout_constraintStart_toStartOf="@id/tvCosts"
+            app:layout_constraintEnd_toStartOf="@id/guideline"
             app:layout_constraintTop_toBottomOf="@id/tvCosts"
-            tools:text="-240 (-11%)" />
+            tools:text="-240.54" />
+
+        <TextView
+            android:id="@+id/tvPercents"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:text="В процентах"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/tvPercentsValue"
+            app:layout_constraintStart_toEndOf="@id/guideline"
+            app:layout_constraintTop_toTopOf="@id/tvPercentsValue" />
+
+
+        <TextView
+            android:id="@+id/tvPercentsValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="24dp"
+            android:textSize="16sp"
+
+            app:layout_constraintStart_toEndOf="@id/tvPercents"
+            app:layout_constraintTop_toBottomOf="@id/tvCosts"
+            tools:text="-11.54%" />
 
         <TextView
             android:id="@+id/tvMy"
@@ -55,9 +111,24 @@
             android:id="@+id/rvMyStocks"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toTopOf="@id/aa_chart_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvMy" />
+
+        <com.github.aachartmodel.aainfographics.aachartcreator.AAChartView
+            android:id="@+id/aa_chart_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rvMyStocks">
+
+        </com.github.aachartmodel.aainfographics.aachartcreator.AAChartView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

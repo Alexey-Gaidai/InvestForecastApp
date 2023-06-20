@@ -8,16 +8,17 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.investforecast.App
 import com.example.investforecast.R
 import com.example.investforecast.databinding.FragmentSignInBinding
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SignInFragment : Fragment() {
 
     private var _binding: FragmentSignInBinding? = null
     private val binding get() = _binding!!
-    private val model: SignInViewModel by viewModels { SignInViewModelFactory(App.repository) }
+    private val model: SignInViewModel by viewModels()
     private var loginSuccessListener: OnLoginSuccessListener? = null
 
     override fun onAttach(context: Context) {
@@ -50,8 +51,8 @@ class SignInFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        model.isTokenNotEmpty.observe(viewLifecycleOwner){
-            it.getContentIfNotHandled()?.let{
+        model.isTokenNotEmpty.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let {
                 Snackbar.make(binding.root, "Вход выполнен", Snackbar.LENGTH_LONG).show()
             }
             loginSuccessListener?.onLoginSuccess()
@@ -64,7 +65,7 @@ class SignInFragment : Fragment() {
         }
     }
 
-    private fun navigateToSignUp(){
+    private fun navigateToSignUp() {
         binding.btSignUp.setOnClickListener {
             findNavController().navigate(R.id.action_signInFragment_to_signUpFragment)
         }

@@ -3,14 +3,17 @@ package com.example.investforecast.ui.login.signin
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.investforecast.domain.InvestRepository
 import com.example.investforecast.ui.generic.Event
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class SignInViewModel(private val investRepository: InvestRepository): ViewModel() {
+@HiltViewModel
+class SignInViewModel @Inject constructor(private val investRepository: InvestRepository) :
+    ViewModel() {
     private val _isTokenNotEmpty: MutableLiveData<Event<Unit>> = MutableLiveData()
     val isTokenNotEmpty: LiveData<Event<Unit>> get() = _isTokenNotEmpty
 
@@ -27,14 +30,4 @@ class SignInViewModel(private val investRepository: InvestRepository): ViewModel
         }
     }
 
-}
-
-@Suppress("UNCHECKED_CAST")
-class SignInViewModelFactory(
-    private val investRepository: InvestRepository
-) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        val viewModel = SignInViewModel(investRepository)
-        return viewModel as T
-    }
 }

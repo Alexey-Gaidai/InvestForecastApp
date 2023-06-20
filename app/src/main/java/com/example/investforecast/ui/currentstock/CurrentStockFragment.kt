@@ -9,21 +9,17 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.example.investforecast.App
 import com.example.investforecast.R
 import com.example.investforecast.databinding.FragmentCurrentStockBinding
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartModel
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartType
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartZoomType
 import com.github.aachartmodel.aainfographics.aachartcreator.AASeriesElement
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CurrentStockFragment : Fragment() {
-    private val stockPricesModel: CurrentStockViewModel by viewModels {
-        CurrentStockViewModelFactory(
-            App.repository,
-            CurrentStockFragmentArgs.fromBundle(requireArguments()).stockName
-        )
-    }
+    private val stockPricesModel: CurrentStockViewModel by viewModels()
     private var _binding: FragmentCurrentStockBinding? = null
     private val binding get() = _binding!!
     private val aaChartModelPrices: AAChartModel = AAChartModel()
@@ -34,6 +30,7 @@ class CurrentStockFragment : Fragment() {
         super.onCreate(savedInstanceState)
         (requireActivity() as AppCompatActivity).supportActionBar?.title =
             CurrentStockFragmentArgs.fromBundle(requireArguments()).stockName
+        stockPricesModel.setTicker(CurrentStockFragmentArgs.fromBundle(requireArguments()).stockName)
     }
 
     override fun onCreateView(
@@ -128,7 +125,7 @@ class CurrentStockFragment : Fragment() {
         // Добавление серий данных в модель графика
         aaChartModelPrices
             .chartType(AAChartType.Line)
-            .title(stockPricesModel.ticker)
+            .title(stockPricesModel.ticker.value!!)
             .zoomType(AAChartZoomType.XY)
             .dataLabelsEnabled(false)
             .categories(categories.toTypedArray())

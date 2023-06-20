@@ -8,9 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.investforecast.App
 import com.example.investforecast.databinding.FragmentStocksBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class StocksFragment : Fragment() {
 
     private var _binding: FragmentStocksBinding? = null
@@ -19,7 +20,7 @@ class StocksFragment : Fragment() {
     private val adapter = StocksAdapter{
         navigateToCurrentStock(it)
     }
-    private val stocksModel: StocksViewModel by viewModels { StocksViewModelFactory(App.repository) }
+    private val stocksModel: StocksViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,

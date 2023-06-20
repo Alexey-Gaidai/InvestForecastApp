@@ -1,16 +1,12 @@
 package com.example.investforecast.ui.stocks
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.investforecast.R
 import com.example.investforecast.databinding.ItemStockBinding
 import com.example.investforecast.domain.model.StockInfo
-import kotlinx.coroutines.channels.ticker
 
 class StocksAdapter(private val onClick: (String) -> Unit) :
     ListAdapter<StockInfo, StocksAdapter.StockInfoViewHolder>(StockInfoDiffCallback()) {

@@ -6,23 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.investforecast.App
 import com.example.investforecast.R
 import com.example.investforecast.databinding.FragmentMystocksBinding
 import com.example.investforecast.domain.model.Portfolio
 import com.example.investforecast.ui.currentstock.format
-import com.example.investforecast.ui.stocks.StocksAdapter
-import com.example.investforecast.ui.stocks.StocksFragmentDirections
-import com.example.investforecast.ui.stocks.StocksViewModel
-import com.example.investforecast.ui.stocks.StocksViewModelFactory
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartModel
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartType
 import com.github.aachartmodel.aainfographics.aachartcreator.AASeriesElement
-import kotlin.math.round
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MyStocksFragment : Fragment() {
 
     private var _binding: FragmentMystocksBinding? = null
@@ -31,7 +26,7 @@ class MyStocksFragment : Fragment() {
     private val adapter = MyStocksAdapter{
         navigateToCurrentStock(it)
     }
-    private val myStocksModel: MyStocksViewModel by viewModels { MyStocksViewModelFactory(App.repository) }
+    private val myStocksModel: MyStocksViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -3,10 +3,11 @@ package com.example.investforecast.ui.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.investforecast.domain.InvestRepository
 import com.example.investforecast.domain.model.News
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -17,7 +18,9 @@ private const val FILTERED_ENTITIES = "true"
 private const val INDUSTRY_DEFAULT = ""
 private const val PAGE = 1
 
-class HomeViewModel(private val investRepository: InvestRepository) : ViewModel() {
+@HiltViewModel
+class HomeViewModel @Inject constructor(private val investRepository: InvestRepository) :
+    ViewModel() {
     private val _news: MutableLiveData<List<News>> = MutableLiveData()
     val news: LiveData<List<News>> get() = _news
 
@@ -40,15 +43,5 @@ class HomeViewModel(private val investRepository: InvestRepository) : ViewModel(
 
             }
         }
-    }
-}
-
-@Suppress("UNCHECKED_CAST")
-class HomeViewModelFactory(
-    private val investRepository: InvestRepository
-) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        val viewModel = HomeViewModel(investRepository)
-        return viewModel as T
     }
 }

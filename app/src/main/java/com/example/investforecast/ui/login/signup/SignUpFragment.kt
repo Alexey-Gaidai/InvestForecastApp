@@ -6,16 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.example.investforecast.App
-import com.example.investforecast.R
-import com.example.investforecast.databinding.FragmentSignInBinding
 import com.example.investforecast.databinding.FragmentSignUpBinding
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SignUpFragment : Fragment() {
     private var _binding: FragmentSignUpBinding? = null
     private val binding get() = _binding!!
-    private val model: SignUpViewModel by viewModels { SignUpViewModelFactory(App.repository) }
+    private val model: SignUpViewModel by viewModels()
 
 
     override fun onCreateView(
@@ -38,7 +37,7 @@ class SignUpFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        model.response.observe(viewLifecycleOwner){
+        model.response.observe(viewLifecycleOwner) {
             Snackbar.make(binding.root, it, Snackbar.LENGTH_LONG).show()
         }
     }

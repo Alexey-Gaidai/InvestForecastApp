@@ -10,7 +10,9 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.investforecast.databinding.ActivityMainBinding
 import com.example.investforecast.ui.login.LoginActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding

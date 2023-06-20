@@ -7,16 +7,17 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.investforecast.App
 import com.example.investforecast.databinding.FragmentHomeBinding
 import com.google.android.material.chip.Chip
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    private val model: HomeViewModel by viewModels{HomeViewModelFactory(App.repository)}
-    private val adapter = NewsAdapter{
+    private val model: HomeViewModel by viewModels()
+    private val adapter = NewsAdapter {
         openInBrowser(it)
     }
 
@@ -46,7 +47,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun observeChipGroup(){
+    private fun observeChipGroup() {
         binding.chipGroup.setOnCheckedChangeListener { group, checkedId ->
             val chip = group.findViewById<Chip>(checkedId)
             val selectedIndustry = chip?.text.toString()

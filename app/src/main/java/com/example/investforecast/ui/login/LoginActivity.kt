@@ -6,7 +6,9 @@ import androidx.navigation.findNavController
 import com.example.investforecast.R
 import com.example.investforecast.databinding.ActivityLoginBinding
 import com.example.investforecast.ui.login.signin.OnLoginSuccessListener
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class LoginActivity : AppCompatActivity(), OnLoginSuccessListener {
     private lateinit var binding: ActivityLoginBinding
 

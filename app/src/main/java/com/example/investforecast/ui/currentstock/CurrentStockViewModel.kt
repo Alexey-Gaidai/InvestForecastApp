@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.investforecast.domain.InvestRepository
+import com.example.investforecast.domain.model.Forecast
 import com.example.investforecast.domain.model.StockForecast
 import com.example.investforecast.domain.model.StockPrices
 import java.lang.Thread.sleep
@@ -16,8 +17,8 @@ import kotlinx.coroutines.launch
 class CurrentStockViewModel(private val investRepository: InvestRepository, val ticker: String) : ViewModel() {
     private val _stockPrices: MutableLiveData<List<StockPrices>> = MutableLiveData()
     val stockPrices: LiveData<List<StockPrices>> get() = _stockPrices
-    private val _stockForecast: MutableLiveData<List<StockForecast>> = MutableLiveData()
-    val stockForecast: LiveData<List<StockForecast>> get() = _stockForecast
+    private val _stockForecast: MutableLiveData<Forecast> = MutableLiveData()
+    val stockForecast: LiveData<Forecast> get() = _stockForecast
 
     init {
         loadPrices()

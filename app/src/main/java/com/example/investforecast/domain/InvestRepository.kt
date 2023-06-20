@@ -1,6 +1,7 @@
 package com.example.investforecast.domain
 
 import com.example.investforecast.data.nw.model.AddStockResponse
+import com.example.investforecast.domain.model.Forecast
 import com.example.investforecast.domain.model.News
 import com.example.investforecast.domain.model.Portfolio
 import com.example.investforecast.domain.model.StockForecast
@@ -13,7 +14,7 @@ interface InvestRepository {
     suspend fun signUp(name: String,lastname: String, email: String, password: String): String
     suspend fun getStocks(): List<StockInfo>
     suspend fun getStockPrices(ticker: String): List<StockPrices>
-    suspend fun getStockForecast(ticker: String): List<StockForecast>
+    suspend fun getStockForecast(ticker: String): Forecast
     suspend fun addStock(ticker: String, count: Int): AddStockResponse
     suspend fun getPortfolio(): Portfolio
     suspend fun getNews(

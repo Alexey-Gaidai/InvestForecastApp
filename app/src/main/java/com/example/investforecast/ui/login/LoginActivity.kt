@@ -1,17 +1,11 @@
 package com.example.investforecast.ui.login
 
-import android.content.Intent
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
-import com.example.investforecast.App
-import com.example.investforecast.MainActivity
 import com.example.investforecast.R
 import com.example.investforecast.databinding.ActivityLoginBinding
 import com.example.investforecast.ui.login.signin.OnLoginSuccessListener
-import com.example.investforecast.ui.login.signin.SignInFragment
-import com.google.android.material.snackbar.Snackbar
 
 class LoginActivity : AppCompatActivity(), OnLoginSuccessListener {
     private lateinit var binding: ActivityLoginBinding

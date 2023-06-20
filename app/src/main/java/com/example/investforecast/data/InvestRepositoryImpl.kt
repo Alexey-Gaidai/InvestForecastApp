@@ -8,6 +8,7 @@ import com.example.investforecast.data.nw.model.AddStockResponse
 import com.example.investforecast.data.nw.model.mapToDomain
 import com.example.investforecast.data.nw.model.toDomain
 import com.example.investforecast.domain.InvestRepository
+import com.example.investforecast.domain.model.Forecast
 import com.example.investforecast.domain.model.News
 import com.example.investforecast.domain.model.Portfolio
 import com.example.investforecast.domain.model.SignUp
@@ -90,7 +91,7 @@ class InvestRepositoryImpl(private val api: InvestAPIService, private val newsAp
         }
     }
 
-    override suspend fun getStockForecast(ticker: String): List<StockForecast> {
+    override suspend fun getStockForecast(ticker: String): Forecast {
         return try {
             val response = api.getStockForecast(ticker)
 
@@ -98,10 +99,10 @@ class InvestRepositoryImpl(private val api: InvestAPIService, private val newsAp
                 val result = response.body()!!
                 result
             } else  {
-                emptyList()
+                Forecast(emptyList(), emptyList(), emptyList())
             }
         } catch (e: Exception){
-            emptyList()
+            Forecast(emptyList(), emptyList(), emptyList())
         }
     }
 
@@ -130,10 +131,10 @@ class InvestRepositoryImpl(private val api: InvestAPIService, private val newsAp
                 val result = response.body()!!
                 result
             } else  {
-                Portfolio(Portfolio.InvestmentPortfolio( 0.0, emptyList(),0.0))
+                Portfolio(Portfolio.InvestmentPortfolio( Portfolio.InvestmentPortfolio.Returns(0.0,0.0), emptyList(),0.0))
             }
         } catch (e: Exception){
-            Portfolio(Portfolio.InvestmentPortfolio( 0.0, emptyList(),0.0))
+            Portfolio(Portfolio.InvestmentPortfolio( Portfolio.InvestmentPortfolio.Returns(0.0,0.0), emptyList(),0.0))
         }
     }
 

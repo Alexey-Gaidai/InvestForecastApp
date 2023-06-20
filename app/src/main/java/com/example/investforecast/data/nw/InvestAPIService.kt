@@ -3,11 +3,13 @@ package com.example.investforecast.data.nw
 import com.example.investforecast.data.nw.model.AddStockResponse
 import com.example.investforecast.data.nw.model.AuthInfo
 import com.example.investforecast.data.nw.model.SignUpResponse
+import com.example.investforecast.domain.model.Forecast
 import com.example.investforecast.domain.model.Portfolio
 import com.example.investforecast.domain.model.SignUp
 import com.example.investforecast.domain.model.StockForecast
 import com.example.investforecast.domain.model.StockInfo
 import com.example.investforecast.domain.model.StockPrices
+import java.util.concurrent.TimeUnit
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
@@ -28,6 +30,8 @@ interface InvestAPIService {
             HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
         private val okHttp =
             OkHttpClient.Builder()
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
                 .addInterceptor(logger)
                 .build()
 
@@ -57,7 +61,7 @@ interface InvestAPIService {
     @GET("/stocks/{ticker}/forecast")
     suspend fun getStockForecast(
         @Path("ticker") ticker: String
-    ): Response<List<StockForecast>>
+    ): Response<Forecast>
 
     @POST("/add_stock")
     suspend fun addStock(

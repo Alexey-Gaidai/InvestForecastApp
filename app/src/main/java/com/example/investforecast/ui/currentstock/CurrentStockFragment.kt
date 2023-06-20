@@ -26,7 +26,8 @@ class CurrentStockFragment : Fragment() {
     }
     private var _binding: FragmentCurrentStockBinding? = null
     private val binding get() = _binding!!
-    private val aaChartModel: AAChartModel = AAChartModel()
+    private val aaChartModelPrices: AAChartModel = AAChartModel()
+    private val aaChartModelForecast: AAChartModel = AAChartModel()
     lateinit var loadingDialog: AlertDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,7 +67,7 @@ class CurrentStockFragment : Fragment() {
     }
 
     private fun initForecastData() {
-        val forecast = stockPricesModel.stockForecast.value!!.takeLast(30).map { it.close }
+        val forecast = stockPricesModel.stockForecast.value!!.prophet.takeLast(30).map { it.close }
         binding.tvForecastPriceValue.text = forecast.average().format(2).toString()
         binding.tvForecastRangeValue.text =
             "${forecast.min().format(2)}-${forecast.max().format(2)}"
@@ -99,11 +100,12 @@ class CurrentStockFragment : Fragment() {
 
     private fun observeViewModel() {
         stockPricesModel.stockForecast.observe(viewLifecycleOwner) { stockForecast ->
-            if (stockForecast != null && stockForecast.isNotEmpty()) {
+            if (stockForecast != null && stockForecast.linreg.isNotEmpty() && stockForecast.rnn.isNotEmpty() && stockForecast.prophet.isNotEmpty()) {
                 initChart()
                 loadingDialog.dismiss()
                 initForecastData()
                 initMarketData()
+                initForecastChart()
             }
         }
     }
@@ -113,12 +115,8 @@ class CurrentStockFragment : Fragment() {
             arrayOf(stockPrice.close)
         }.toMutableList()
 
-        val dataPred = stockPricesModel.stockForecast.value!!.map { stockPrice ->
-            arrayOf(stockPrice.close)
-        }
-
-        val categoriesPred: List<String> =
-            stockPricesModel.stockForecast.value!!.map { stockPrice ->
+        val categories: List<String> =
+            stockPricesModel.stockPrices.value!!.map { stockPrice ->
                 stockPrice.date.split('T').first()
             }
 
@@ -127,21 +125,59 @@ class CurrentStockFragment : Fragment() {
             .data(data.toTypedArray())
             .name("actual")
 
-        val seriesElementPred = AASeriesElement()
-            .data(dataPred.toTypedArray())
-            .name("predicted")
-
         // Добавление серий данных в модель графика
-        aaChartModel
+        aaChartModelPrices
             .chartType(AAChartType.Line)
             .title(stockPricesModel.ticker)
             .zoomType(AAChartZoomType.XY)
             .dataLabelsEnabled(false)
-            .categories(categoriesPred.toTypedArray())
+            .categories(categories.toTypedArray())
             .backgroundColor("#FFFFFF")
-            .series(arrayOf(seriesElementActual, seriesElementPred))
+            .series(arrayOf(seriesElementActual))
 
-        binding.chartStockPrices.aa_drawChartWithChartModel(aaChartModel)
+        binding.chartStockPrices.aa_drawChartWithChartModel(aaChartModelPrices)
+    }
+
+    private fun initForecastChart() {
+        val dataProphet = stockPricesModel.stockForecast.value!!.prophet.map { stockPrice ->
+            arrayOf(stockPrice.close)
+        }.toMutableList()
+
+        val dataLinreg = stockPricesModel.stockForecast.value!!.linreg.map { stockPrice ->
+            arrayOf(stockPrice.close)
+        }.toMutableList()
+
+        val dataRNN = stockPricesModel.stockForecast.value!!.rnn.map { stockPrice ->
+            arrayOf(stockPrice.close)
+        }.toMutableList()
+
+        val categories: List<String> =
+            stockPricesModel.stockForecast.value!!.prophet.map { stockPrice ->
+                stockPrice.date.split('T').first()
+            }
+
+        // Создание серий данных
+        val seriesElementProphet = AASeriesElement()
+            .data(dataProphet.toTypedArray())
+            .name("Prophet")
+        val seriesElementLinreg = AASeriesElement()
+            .data(dataLinreg.toTypedArray())
+            .name("LinReg")
+        val seriesElementRNN = AASeriesElement()
+            .data(dataRNN.toTypedArray())
+            .name("RNN")
+
+        // Добавление серий данных в модель графика
+        aaChartModelForecast
+            .chartType(AAChartType.Line)
+            .title("Прогноз")
+            .zoomType(AAChartZoomType.XY)
+            .dataLabelsEnabled(false)
+            .categories(categories.toTypedArray())
+            .backgroundColor("#FFFFFF")
+            .series(arrayOf(seriesElementProphet, seriesElementLinreg, seriesElementRNN))
+
+        binding.chartForecast.aa_drawChartWithChartModel(aaChartModelForecast)
     }
 
     override fun onDestroyView() {
